@@ -17,6 +17,6 @@ app.use("/patientRecord", patientRecord);
 app.use("/room", roomroute);
 
 connectDatabase();
-app.listen(process.env.port, () => {
-  console.log(`server started at ${process.env.port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`server started at ${process.env.PORT}`);
 });
