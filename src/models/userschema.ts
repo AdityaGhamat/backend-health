@@ -15,7 +15,7 @@ const userSchema = new Schema<UserDocument>(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ["doctor", "patient"], required: true },
+    role: { type: String, enum: ["doctor", "patient"] },
   },
   { discriminatorKey: "role", timestamps: true }
 );

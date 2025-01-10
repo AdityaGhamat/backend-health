@@ -6,7 +6,17 @@ import jwt from "jsonwebtoken";
 
 // Signup Controller
 export const signup = async (req: Request, res: Response) => {
-  const { email, password, role, name, contact, ...otherDetails } = req.body;
+  const {
+    email,
+    password,
+    name,
+    contact,
+    specialization,
+    phoneNumber,
+    consultationFee,
+    yearsOfExperience,
+    ...otherDetails
+  } = req.body;
 
   try {
     // Check if the email is already in use
@@ -16,37 +26,25 @@ export const signup = async (req: Request, res: Response) => {
       return;
     }
 
-    // Create a new user (Doctor or Patient)
-    let newUser;
-    if (role === "doctor") {
-      newUser = new DoctorModel({
-        email,
-        password,
-        role,
-        name,
-        contact,
-        ...otherDetails,
-      });
-    } else if (role === "patient") {
-      newUser = new PatientModel({
-        email,
-        password,
-        role,
-        name,
-        contact,
-        ...otherDetails,
-      });
-    } else {
-      res.status(400).json({ error: "Invalid role provided" });
-      return;
-    }
+    // Create a new doctor (role will automatically be "doctor" based on the discriminator)
+    const newDoctor = new DoctorModel({
+      email,
+      password,
+      name,
+      contact,
+      specialization,
+      phoneNumber,
+      consultationFee,
+      yearsOfExperience,
+      ...otherDetails, // Additional details if provided
+    });
 
-    // Save the new user to the database
-    await newUser.save();
+    // Save the new doctor to the database
+    await newDoctor.save();
 
     // Generate a JWT token for the new user
     const token = jwt.sign(
-      { userId: newUser._id, role: newUser.role },
+      { userId: newDoctor._id, role: newDoctor.role },
       process.env.JWT_SECRET_KEY as string,
       { expiresIn: "1h" }
     );
@@ -56,9 +54,9 @@ export const signup = async (req: Request, res: Response) => {
       message: "Signup successful",
       token,
       user: {
-        email: newUser.email,
-        role: newUser.role,
-        _id: newUser._id,
+        email: newDoctor.email,
+        role: newDoctor.role,
+        _id: newDoctor._id,
       },
     });
   } catch (error: any) {
