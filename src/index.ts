@@ -5,7 +5,7 @@ import patientRoute from "./routes/patientroute";
 import patientRecord from "./routes/patientrecordroute";
 import roomroute from "./routes/room";
 import dotenv from "dotenv";
-import { createRoom } from "./lib/room";
+
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -17,6 +17,6 @@ app.use("/patientRecord", patientRecord);
 app.use("/room", roomroute);
 const port = process.env.PORT || 3000;
 connectDatabase();
-app.listen(3000, () => {
-  console.log(`server started at `);
+app.listen(port, () => {
+  console.log(`server started at ${port}`);
 });
