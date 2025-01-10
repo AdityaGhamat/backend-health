@@ -15,8 +15,8 @@ app.use("/user", userRoute);
 app.use("/patient", patientRoute);
 app.use("/patientRecord", patientRecord);
 app.use("/room", roomroute);
-const port = process.env.PORT || 3000;
+
 connectDatabase();
-app.listen(port, () => {
-  console.log(`server started at ${port}`);
+app.listen(process.env.port, () => {
+  console.log(`server started at ${process.env.port}`);
 });
