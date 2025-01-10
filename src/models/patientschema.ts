@@ -11,11 +11,11 @@ interface Patient extends BaseUser {
 }
 
 const patientSchema = new Schema<Patient>({
-  name: { type: String, required: true },
-  location: { type: String, required: true },
-  age: { type: Number, required: true },
-  bloodGroup: { type: String, required: true },
-  contact: { type: String, required: true },
+  name: { type: String },
+  location: { type: String },
+  age: { type: Number },
+  bloodGroup: { type: String },
+  contact: { type: String },
   roomId: { type: String, default: null },
 });
 

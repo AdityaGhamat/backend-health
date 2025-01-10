@@ -1,7 +1,35 @@
 import { Request, Response } from "express";
 import { PatientModel } from "../models/patientschema"; // Assuming the PatientModel is in the 'models' folder
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+export const patientSignup = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
 
+  // Check if the patient already exists by email
+  const existingPatient = await PatientModel.findOne({ email });
+  if (existingPatient) {
+    res.status(400).json({ error: "Patient already exists with this email!" });
+  }
+
+  // Hash the password before saving
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create a new patient document
+  const newPatient = new PatientModel({
+    email,
+    password: hashedPassword,
+  });
+
+  // Save the new patient to the database
+  await newPatient.save();
+
+  // Return a success message with the new patient's information (excluding password)
+  const { password: _, ...patientData } = newPatient.toObject();
+  res.status(201).json({
+    message: "Patient signup successful!",
+    patient: patientData,
+  });
+};
 // Create Patient Controller
 export const createPatient = async (req: Request, res: Response) => {
   const {

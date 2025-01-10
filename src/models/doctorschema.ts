@@ -12,12 +12,12 @@ interface Doctor extends BaseUser {
 }
 
 const doctorSchema = new Schema<Doctor>({
-  name: { type: String, required: true },
-  specialization: { type: String, required: true },
-  phoneNumber: { type: String, required: true },
-  consultationFee: { type: Number, required: true },
-  yearsOfExperience: { type: Number, required: true },
-  isActive: { type: Boolean, required: true, default: true },
+  name: { type: String },
+  specialization: { type: String },
+  phoneNumber: { type: String },
+  consultationFee: { type: Number },
+  yearsOfExperience: { type: Number },
+  isActive: { type: Boolean, default: true },
   roomId: { type: String, default: null },
 });
 

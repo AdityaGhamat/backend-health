@@ -1,7 +1,12 @@
 import { Schema, model, Document } from "mongoose";
 
-// Define the schema for Patient's medical history or records
-interface PatientRecord {
+interface Medication {
+  name: string;
+  dosage: string;
+  duration: string;
+}
+
+interface PatientRecord extends Document {
   patientId: Schema.Types.ObjectId;
   doctorId: Schema.Types.ObjectId;
   visitDate: Date;
@@ -9,19 +14,25 @@ interface PatientRecord {
   symptoms: string;
   diagnosis: string;
   treatment: string;
-  prescribedMedication: string;
-  nextVisitDate?: Date; // Optional next visit date
+  prescribedMedication: Medication[]; // Array of medication objects
+  nextVisitDate: Date;
 }
 
 const patientRecordSchema = new Schema<PatientRecord>({
-  patientId: { type: Schema.Types.ObjectId, ref: "Patient", required: true },
-  doctorId: { type: Schema.Types.ObjectId, ref: "Doctor", required: true },
-  visitDate: { type: Date, required: true },
-  medicalHistory: { type: String, required: true },
-  symptoms: { type: String, required: true },
-  diagnosis: { type: String, required: true },
-  treatment: { type: String, required: true },
-  prescribedMedication: { type: String, required: true },
+  patientId: { type: Schema.Types.ObjectId, ref: "Patient" },
+  doctorId: { type: Schema.Types.ObjectId, ref: "Doctor" },
+  visitDate: { type: Date },
+  medicalHistory: { type: String },
+  symptoms: { type: String },
+  diagnosis: { type: String },
+  treatment: { type: String },
+  prescribedMedication: [
+    {
+      name: { type: String, required: true },
+      dosage: { type: String, required: true },
+      duration: { type: String, required: true },
+    },
+  ], // Array of medication objects
   nextVisitDate: { type: Date }, // Optional field
 });
 
